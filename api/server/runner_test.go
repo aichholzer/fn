@@ -301,12 +301,12 @@ func TestRouteRunnerTimeout(t *testing.T) {
 func TestRouteRunnerMinimalConcurrentHotSync(t *testing.T) {
 	buf := setLogBuffer()
 
+	app := &models.App{Name: "myapp", Config: models.Config{}}
+	app.SetDefaults()
 	ds := datastore.NewMockInit(
-		[]*models.App{
-			{Name: "myapp", Config: models.Config{}},
-		},
+		[]*models.App{app},
 		[]*models.Route{
-			{Path: "/hot", AppName: "myapp", Image: "fnproject/fn-test-utils", Type: "sync", Format: "http", Memory: 128, Timeout: 30, IdleTimeout: 5},
+			{Path: "/hot", AppID: app.ID, Image: "fnproject/fn-test-utils", Type: "sync", Format: "http", Memory: 128, Timeout: 30, IdleTimeout: 5},
 		}, nil,
 	)
 
